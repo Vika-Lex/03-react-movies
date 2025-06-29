@@ -59,8 +59,7 @@ const App = () => {
     return (
         <>
             <SearchBar onSubmit={handleSubmit}/>
-            <Loader/>
-            {loading ? (<Loader/>) : (
+                   {loading ? (<Loader/>) : (
                 <>
                     <MovieGrid movies={movies}
                                onSelect={onSelect}
