@@ -9,8 +9,6 @@ interface MovieModalProps {
     onClose: () => void;
 
 }
-
-
 const MovieModal = ({movie, onClose}: MovieModalProps) => {
     useEffect(() => {
         document.body.style.overflow='hidden';
