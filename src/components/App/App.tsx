@@ -6,7 +6,7 @@ import MovieGrid from "../MovieGrid/MovieGrid.tsx";
 import MovieModal from "../MovieModal/MovieModal.tsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.tsx";
 import {fetchMovies} from "../../services/movieService.ts";
-
+import {toast} from "react-hot-toast";
 
 const App = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -27,10 +27,9 @@ const App = () => {
         setActiveMovie(null)
     }
 
-
     useEffect(() => {
-        if(isFirstRender.current){
-            isFirstRender.current=false
+        if (isFirstRender.current) {
+            isFirstRender.current = false
             return
         }
         fetchMovies(query).then(res => {
@@ -47,19 +46,24 @@ const App = () => {
         })
     }, [query]);
 
+    useEffect(() => {
+        if (movies?.length === 0) {
+            toast.error('No movies found for your request.')
+        }
+    }, [movies]);
+
     if (error) {
         return (
             <>
                 <SearchBar onSubmit={handleSubmit}/>
                 {loading ? (<Loader/>) : (<ErrorMessage error={error}/>)}
-
             </>)
     }
 
     return (
         <>
             <SearchBar onSubmit={handleSubmit}/>
-                   {loading ? (<Loader/>) : (
+            {loading ? (<Loader/>) : (
                 <>
                     <MovieGrid movies={movies}
                                onSelect={onSelect}
