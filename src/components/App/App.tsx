@@ -6,7 +6,7 @@ import MovieGrid from "../MovieGrid/MovieGrid.tsx";
 import MovieModal from "../MovieModal/MovieModal.tsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.tsx";
 import {fetchMovies} from "../../services/movieService.ts";
-import {toast} from "react-hot-toast";
+import {toast, Toaster} from "react-hot-toast";
 
 const App = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -73,6 +73,7 @@ const App = () => {
                     />}
                 </>
             )}
+            <Toaster/>
         </>
     );
 };
