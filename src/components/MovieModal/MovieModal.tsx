@@ -9,30 +9,38 @@ interface MovieModalProps {
     onClose: () => void;
 
 }
-const MovieModal = ({movie, onClose}: MovieModalProps) => {
-    useEffect(() => {
-        document.body.style.overflow='hidden';
 
-        function onPressEsc(event:KeyboardEvent) {
-            if(event.code === "Escape") {
+const MovieModal = ({movie, onClose}: MovieModalProps) => {
+    const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        if (event.currentTarget !== event.target) {
+            return
+        }
+        onClose()
+    }
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+
+        function onPressEsc(event: KeyboardEvent) {
+            if (event.code === "Escape") {
                 onClose()
             }
         }
+
         window.addEventListener('keydown', onPressEsc)
         return () => {
-            document.body.style.overflow='';
-            window.removeEventListener('keydown',onPressEsc)
+            document.body.style.overflow = '';
+            window.removeEventListener('keydown', onPressEsc)
         }
     }, [onClose]);
 
     return createPortal(
         <div className={style.backdrop}
-             onClick={onClose}
+             onClick={handleBackdropClick}
              role="dialog"
              aria-modal="true"
         >
             <div className={style.modal}
-            onClick={event => event.stopPropagation()}
+
             >
                 <button className={style.closeButton}
                         onClick={onClose}
@@ -41,8 +49,8 @@ const MovieModal = ({movie, onClose}: MovieModalProps) => {
                     &times;
                 </button>
                 <img
-                    src={`${BASE_IMAGE_PATH}${SIZE.original}/${movie.poster_path}`}
-                    alt="movie_title"
+                    src={`${BASE_IMAGE_PATH}${SIZE.original}/${movie.backdrop_path}`}
+                    alt={movie.title}
                     className={style.image}
                 />
                 <div className={style.content}>

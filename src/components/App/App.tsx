@@ -11,52 +11,52 @@ import {toast, Toaster} from "react-hot-toast";
 const App = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null)
-    const [activeMovie, setActiveMovie] = useState<Movie | null>(null)
+    const [error, setError] = useState<string | null>(null);
+    const [activeMovie, setActiveMovie] = useState<Movie | null>(null);
     const [query, setQuery] = useState<string>('')
     const isFirstRender = useRef(true);
+
     const handleSubmit = (query: string) => {
         setQuery(query);
-    }
+    };
 
     const onSelect = (movie: Movie) => {
-        setActiveMovie(movie)
-    }
+        setActiveMovie(movie);
+    };
 
     const onClose = () => {
-        setActiveMovie(null)
-    }
+        setActiveMovie(null);
+    };
 
     useEffect(() => {
         if (isFirstRender.current) {
-            isFirstRender.current = false
-            return
+            isFirstRender.current = false;
+            return;
         }
-        fetchMovies(query).then(res => {
+        setMovies([]);
+        setError(null);
+        setLoading(true);
 
-            setLoading(true);
-            setError(null);
-            setMovies(res.results)
+        fetchMovies(query).then(res => {
+            if (res.results.length === 0 && query) {
+                toast.error('No movies found for your request.')
+            }
+            setMovies(res.results);
+
 
         }).catch(error => {
-            setLoading(true);
-            setError(error.message)
+            setError(error.message);
         }).finally(() => {
             setLoading(false)
         })
     }, [query]);
 
-    useEffect(() => {
-        if (movies?.length === 0) {
-            toast.error('No movies found for your request.')
-        }
-    }, [movies]);
-
     if (error) {
         return (
             <>
                 <SearchBar onSubmit={handleSubmit}/>
-                {loading ? (<Loader/>) : (<ErrorMessage error={error}/>)}
+                <ErrorMessage error={error}/>
+
             </>)
     }
 

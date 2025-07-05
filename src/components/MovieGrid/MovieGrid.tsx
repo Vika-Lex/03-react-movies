@@ -16,10 +16,10 @@ const MovieGrid = ({onSelect, movies}: MovieGridProps) => {
                         <img
                             className={style.image}
                             src={`${BASE_IMAGE_PATH}${SIZE.w500}/${movie.poster_path}`}
-                            alt="movie title"
+                            alt={movie.title}
                             loading="lazy"
                         />
-                        <h2 className={style.title}>Movie title</h2>
+                        <h2 className={style.title}>{movie.title}</h2>
                     </div>
                 </li>
             ))}
